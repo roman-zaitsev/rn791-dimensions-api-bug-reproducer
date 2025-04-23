@@ -5,9 +5,10 @@
  * @format
  */
 
-import React from 'react';
 import type {PropsWithChildren} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
+  Dimensions,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -72,16 +73,36 @@ function App(): React.JSX.Element {
    */
   const safePadding = '5%';
 
+  const [orientation, setOrientation] = useState('portrait');
+  useEffect(() => {
+    const updateOrientation = () => {
+      const {height, width} = Dimensions.get('window');
+      setOrientation(width > height ? 'landscape' : 'portrait');
+    };
+
+    updateOrientation();
+    const subscription = Dimensions.addEventListener(
+      'change',
+      updateOrientation,
+    );
+
+    return () => {
+      subscription?.remove();
+    };
+  }, []);
+
+  console.log(orientation);
+  console.log(Dimensions.get('window'));
+
   return (
     <View style={backgroundStyle}>
       <StatusBar
         barStyle={isDarkMode ? 'light-content' : 'dark-content'}
         backgroundColor={backgroundStyle.backgroundColor}
       />
-      <ScrollView
-        style={backgroundStyle}>
+      <ScrollView style={backgroundStyle}>
         <View style={{paddingRight: safePadding}}>
-          <Header/>
+          <Header />
         </View>
         <View
           style={{
