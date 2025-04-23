@@ -6,7 +6,7 @@
  */
 
 import type {PropsWithChildren} from 'react';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -73,11 +73,11 @@ function App(): React.JSX.Element {
    */
   const safePadding = '5%';
 
-  const [orientation, setOrientation] = useState('portrait');
   useEffect(() => {
     const updateOrientation = () => {
       const {height, width} = Dimensions.get('window');
-      setOrientation(width > height ? 'landscape' : 'portrait');
+      const orientation = width > height ? 'landscape' : 'portrait';
+      console.log('new orientation: ', orientation);
     };
 
     updateOrientation();
@@ -90,9 +90,6 @@ function App(): React.JSX.Element {
       subscription?.remove();
     };
   }, []);
-
-  console.log(orientation);
-  console.log(Dimensions.get('window'));
 
   return (
     <View style={backgroundStyle}>
